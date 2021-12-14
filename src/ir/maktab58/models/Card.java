@@ -17,6 +17,7 @@ import java.util.Date;
 public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
     @Column(name = "card_number", updatable = false)
     private long cardNumber;
     @Column(name = "cvv2", updatable = false)

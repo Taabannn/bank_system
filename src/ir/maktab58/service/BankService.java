@@ -1,15 +1,24 @@
 package ir.maktab58.service;
 
+import ir.maktab58.enumeration.UpdateType;
 import ir.maktab58.exceptions.BankSysException;
 import ir.maktab58.models.Owner;
+import ir.maktab58.models.UpdateInfo;
+import ir.maktab58.models.factory.Account;
 import ir.maktab58.service.singletonvalidator.NationalCodeValidator;
 import ir.maktab58.service.singletonvalidator.UserAndPassValidator;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * @author Taban Soleymani
  */
 public class BankService {
     private final OwnerService ownerService = new OwnerService();
+    private final AccountService accountService = new AccountService();
+    private final CardService cardService = new CardService();
+    private final UpdateInfoService updateInfoService = new UpdateInfoService();
 
     public int registerOwnerInBank(String inputLine) {
         String[] tokens = inputLine.split(" ");
@@ -65,5 +74,43 @@ public class BankService {
             throw BankSysException.builder()
                     .message("national_code: " + nationalCode + " is already existed.")
                     .errorCode(400).build();
+    }
+
+    public List<Account> getOwnerAccounts(int id) {
+        return accountService.getAccountsByOwnerId(id);
+    }
+
+    public int openNewAccountForThisOwner(int id, String inputLine) {
+        String[] tokens = inputLine.split(" ");
+        String type = tokens[0];
+        long initialBalance = Long.parseLong(tokens[1]);
+        Owner owner = ownerService.getOwnerById(id);
+        Account account = accountService.openAnAccount(type, initialBalance, owner);
+        cardService.generateACard(account);
+        return accountService.saveAccount(account);
+    }
+
+    public int checkAccountExisted(long accountNumber, int ownerId) {
+        return accountService.getAccountId(accountNumber, ownerId).getId();
+    }
+
+    public void updateUserUserName(String username, int ownerId) {
+        Owner owner = ownerService.updateOwnerUsername(username, ownerId);
+        UpdateInfo updateInfo = UpdateInfo.builder()
+                .withDateOfUpdate(new Date())
+                .withUpdateType(UpdateType.UPDATE_USERNAME)
+                .withDetail("username has change to: " + username)
+                .withOwner(owner).build();
+        updateInfoService.saveUpdateInfo(updateInfo);
+    }
+
+    public void updateUserPassword(String password, int ownerId) {
+        Owner owner = ownerService.updateOwnerPassword(password, ownerId);
+        UpdateInfo updateInfo = UpdateInfo.builder()
+                .withDateOfUpdate(new Date())
+                .withUpdateType(UpdateType.UPDATE_USERNAME)
+                .withDetail("password has change to: " + password)
+                .withOwner(owner).build();
+        updateInfoService.saveUpdateInfo(updateInfo);
     }
 }

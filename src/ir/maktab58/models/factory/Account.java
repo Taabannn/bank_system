@@ -21,14 +21,14 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(of = {"accountNumber"})
-@ToString(of = {"id", "accountNumber", "balance", "owner", "card", "creationDate", "transactions"})
+@ToString(of = {"id", "accountNumber", "balance", "card", "creationDate"})
 public abstract class Account {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
     protected int id;
     @Column(name = "account_number")
     protected long accountNumber;
-    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_card_id")
     protected Card card;
     @CreationTimestamp
