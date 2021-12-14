@@ -26,13 +26,11 @@ public class Owner {
     @Column(name = "family")
     private String family;
     @Column(name = "national_code", updatable = false)
-    private long nationalCode;
+    private String nationalCode;
     @Column(name = "username")
     private String username;
     @Column(name = "password")
     private String password;
-    @Column(name = "email")
-    private String email;
     @Enumerated(EnumType.STRING)
     private OwnerRecord ownerRecord = OwnerRecord.NO_RECORD;
     @OneToMany(mappedBy = "owner")
@@ -45,12 +43,11 @@ public class Owner {
     private long amountOfDebt = 0;
 
     @Builder(setterPrefix = "with")
-    public Owner(String name, String family, long nationalCode, String username, String password, String email) {
+    public Owner(String name, String family, String nationalCode, String username, String password) {
         this.name = name;
         this.family = family;
         this.nationalCode = nationalCode;
         this.username = username;
         this.password = password;
-        this.email = email;
     }
 }
