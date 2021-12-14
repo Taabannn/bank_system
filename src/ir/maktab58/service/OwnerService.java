@@ -42,7 +42,7 @@ public class OwnerService {
         boolean isUserAndPassValid = UserAndPassValidator.getInstance().isUserAndPassValid(owner.getUsername(), password);
         if(!isUserAndPassValid)
             throw BankSysException.builder().message("you've entered invalid password").errorCode(400).build();
-        owner.setUsername(password);
+        owner.setPassword(password);
         ownerDao.update(owner);
         return owner;
     }

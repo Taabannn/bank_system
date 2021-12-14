@@ -99,7 +99,7 @@ public class BankService {
         UpdateInfo updateInfo = UpdateInfo.builder()
                 .withDateOfUpdate(new Date())
                 .withUpdateType(UpdateType.UPDATE_USERNAME)
-                .withDetail("username has change to: " + username)
+                .withDetail("username has changed to: " + username)
                 .withOwner(owner).build();
         updateInfoService.saveUpdateInfo(updateInfo);
     }
@@ -109,7 +109,7 @@ public class BankService {
         UpdateInfo updateInfo = UpdateInfo.builder()
                 .withDateOfUpdate(new Date())
                 .withUpdateType(UpdateType.UPDATE_USERNAME)
-                .withDetail("password has change to: " + password)
+                .withDetail("password has changed to: " + password)
                 .withOwner(owner).build();
         updateInfoService.saveUpdateInfo(updateInfo);
     }
