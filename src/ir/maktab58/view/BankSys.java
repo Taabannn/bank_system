@@ -117,8 +117,8 @@ public class BankSys {
             try {
                 switch (choice) {
                     case "1" -> updateUserInfo(ownerId);
-                    case "2" -> withdraw(ownerId, accountId);
-                    case "3" -> deposit(ownerId, accountId);
+                    case "2" -> withdraw(accountId);
+                    case "3" -> deposit(accountId);
                     case "4" -> cardToCard(ownerId, accountId);
                     case "5" -> back = true;
                     default -> throw BankSysException.builder()
@@ -158,12 +158,26 @@ public class BankSys {
                 .errorCode(400).build();
     }
 
-    private void withdraw(int ownerId, int accountId) {
-
+    private void withdraw(int accountId) {
+        System.out.println("please enter the amount of discharge: ");
+        String dischargeStr = scanner.nextLine().trim();
+        long discharge = Long.parseLong(dischargeStr);
+        int result = bankService.withdrawTransaction(accountId, discharge);
+        if (result == 0)
+            System.out.println("please try again!");
+        else
+            System.out.println("withdraw transaction has happened successfully!");
     }
 
-    private void deposit(int ownerId, int accountId) {
-
+    private void deposit(int accountId) {
+        System.out.println("please enter the amount of charge: ");
+        String chargeStr = scanner.nextLine().trim();
+        long charge = Long.parseLong(chargeStr);
+        int result = bankService.depositTransaction(accountId, charge);
+        if (result == 0)
+            System.out.println("please try again!");
+        else
+            System.out.println("deposit transaction has happened successfully!");
     }
 
     private boolean showOwnerMenuWhenNoAccountIsAdded(int id) {

@@ -1,7 +1,9 @@
 package ir.maktab58.service;
 
+import ir.maktab58.enumeration.TransactionType;
 import ir.maktab58.enumeration.UpdateType;
 import ir.maktab58.exceptions.BankSysException;
+import ir.maktab58.models.BankTransaction;
 import ir.maktab58.models.Owner;
 import ir.maktab58.models.UpdateInfo;
 import ir.maktab58.models.factory.Account;
@@ -19,6 +21,7 @@ public class BankService {
     private final AccountService accountService = new AccountService();
     private final CardService cardService = new CardService();
     private final UpdateInfoService updateInfoService = new UpdateInfoService();
+    private final BankTransactionService bankTransactionService = new BankTransactionService();
 
     public int registerOwnerInBank(String inputLine) {
         String[] tokens = inputLine.split(" ");
@@ -112,5 +115,38 @@ public class BankService {
                 .withDetail("password has changed to: " + password)
                 .withOwner(owner).build();
         updateInfoService.saveUpdateInfo(updateInfo);
+    }
+
+    public int withdrawTransaction(int accountId, long discharge) {
+        List<BankTransaction> accountTransaction = bankTransactionService.getAccountTransaction(accountId);
+        Account account = accountService.getAccountByAccountId(accountId);
+        if (account.getBalance() > discharge) {
+            account.setBalance(account.getBalance() - discharge);
+            if (accountTransaction.size() == 3)
+                bankTransactionService.deleteTheOldTransaction(accountTransaction.remove(0));
+            accountService.updateAccount(account);
+            BankTransaction bankTransaction = BankTransaction.builder()
+                    .withDateOfTransaction(new Date())
+                    .withTransactionType(TransactionType.WITHDRAW)
+                    .withAccount(account)
+                    .withDetails("-" + discharge).build();
+            return bankTransactionService.saveNewTransaction(bankTransaction);
+        }
+        return 0;
+    }
+
+    public int depositTransaction(int accountId, long charge) {
+        List<BankTransaction> accountTransaction = bankTransactionService.getAccountTransaction(accountId);
+        Account account = accountService.getAccountByAccountId(accountId);
+        account.setBalance(account.getBalance() + charge);
+        if (accountTransaction.size() == 3)
+            bankTransactionService.deleteTheOldTransaction(accountTransaction.remove(0));
+        accountService.updateAccount(account);
+        BankTransaction bankTransaction = BankTransaction.builder()
+                .withDateOfTransaction(new Date())
+                .withTransactionType(TransactionType.DEPOSIT)
+                .withAccount(account)
+                .withDetails("+" + charge).build();
+        return bankTransactionService.saveNewTransaction(bankTransaction);
     }
 }

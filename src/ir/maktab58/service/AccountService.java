@@ -31,4 +31,12 @@ public class AccountService {
     public Account getAccountId(long accountNumber, int ownerId) {
         return accountDao.findAccountsByOwnerIdAndAccountNumber(accountNumber, ownerId);
     }
+
+    public Account getAccountByAccountId(int accountId) {
+        return accountDao.get(Account.class, accountId);
+    }
+
+    public void updateAccount(Account account) {
+        accountDao.update(account);
+    }
 }

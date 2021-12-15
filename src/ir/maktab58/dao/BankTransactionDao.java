@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @author Taban Soleymani
  */
-public class TransactionDao extends BaseDaoInterfaceImpl<BankTransaction> {
+public class BankTransactionDao extends BaseDaoInterfaceImpl<BankTransaction> {
     public List<BankTransaction> findTransactionsByAccountID(int accountId) {
         Session session = SessionUtil.getSession();
         Transaction transaction = session.beginTransaction();
