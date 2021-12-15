@@ -203,4 +203,9 @@ public class BankService {
                 .message("Your balance is not enough.")
                 .errorCode(400).build();
     }
+
+    public long getAccountBalance(int accountId) {
+        Account account = accountService.getAccountByAccountId(accountId);
+        return account.getBalance();
+    }
 }

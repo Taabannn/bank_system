@@ -113,6 +113,7 @@ public class BankSys {
                     "2) withdraw\n" +
                     "3) deposit\n" +
                     "4) card to card\n" +
+                    "5) check the balance\n" +
                     "5) back");
             String choice = scanner.nextLine().trim();
             try {
@@ -121,15 +122,21 @@ public class BankSys {
                     case "2" -> withdraw(accountId);
                     case "3" -> deposit(accountId);
                     case "4" -> cardToCard(accountId);
-                    case "5" -> back = true;
+                    case "5" -> checkTheBalance(accountId);
+                    case "6" -> back = true;
                     default -> throw BankSysException.builder()
-                            .message("Choice must be an integer between 1 to 5.")
+                            .message("Choice must be an integer between 1 to 6.")
                             .errorCode(400).build();
                 }
             } catch (RuntimeException e) {
                 System.out.println(e.getMessage());
             }
         }
+    }
+
+    private void checkTheBalance(int accountId) {
+        long accountBalance = bankService.getAccountBalance(accountId);
+        System.out.println("your balance is: " + accountBalance);
     }
 
     private void cardToCard(int accountId) {
