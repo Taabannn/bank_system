@@ -52,8 +52,8 @@ public class OwnerDao extends BaseDaoInterfaceImpl<Owner> {
             Session session = SessionUtil.getSession();
             Transaction transaction = session.beginTransaction();
             Query<Owner> query = session.createQuery("select owner FROM Owner owner join Account account on owner.id=account.owner.id " +
-                    "where account.id=:aacount_id", Owner.class);
-            query.setParameter("aacount_id", account.getId());
+                    "where account.id=:account_id", Owner.class);
+            query.setParameter("account_id", account.getId());
             owner = query.getSingleResult();
             transaction.commit();
             session.close();
