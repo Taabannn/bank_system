@@ -157,5 +157,50 @@ public class BankService {
     public Owner getCardNumberOwnerInfo(long destCardNumber) {
         Card card = cardService.getCard(destCardNumber);
         Account account = accountService.getCardAccount(card.getId());
+        return ownerService.getOwnerByAccountId(account);
+    }
+
+    public int cardToCardTransaction(int accountId, long discharge, long destCardNumber) {
+        int withdrawResult = withdrawSourceAccount(accountId, discharge);
+        int depositResult = depositDesAccount(discharge, destCardNumber);
+        if ((withdrawResult != 0) && (depositResult != 0))
+            return 1;
+        return 0;
+    }
+
+    private int depositDesAccount(long discharge, long destCardNumber) {
+        Card card = cardService.getCard(destCardNumber);
+        Account destAccount = accountService.getCardAccount(card.getId());
+        destAccount.setBalance(destAccount.getBalance() + discharge);
+        List<BankTransaction> destAccountTransaction = bankTransactionService.getAccountTransaction(destAccount.getId());
+        if (destAccountTransaction.size() == 3)
+            bankTransactionService.deleteTheOldTransaction(destAccountTransaction.remove(0));
+        accountService.updateAccount(destAccount);
+        BankTransaction bankTransaction1 = BankTransaction.builder()
+                .withTransactionType(TransactionType.CARD_TO_CARD)
+                .withAccount(destAccount)
+                .withDateOfTransaction(new Date())
+                .withDetails("+" + discharge).build();
+        return bankTransactionService.saveNewTransaction(bankTransaction1);
+    }
+
+    private int withdrawSourceAccount(int accountId, long discharge) {
+        Account sourceAccount = accountService.getAccountByAccountId(accountId);
+        if (sourceAccount.getBalance() > discharge) {
+            sourceAccount.setBalance(sourceAccount.getBalance() - discharge);
+            List<BankTransaction> sourceAccountTransaction = bankTransactionService.getAccountTransaction(accountId);
+            if (sourceAccountTransaction.size() == 3)
+                bankTransactionService.deleteTheOldTransaction(sourceAccountTransaction.remove(0));
+            accountService.updateAccount(sourceAccount);
+            BankTransaction bankTransaction = BankTransaction.builder()
+                    .withDateOfTransaction(new Date())
+                    .withAccount(sourceAccount)
+                    .withTransactionType(TransactionType.CARD_TO_CARD)
+                    .withDetails("-" + discharge).build();
+            return bankTransactionService.saveNewTransaction(bankTransaction);
+        }
+        throw BankSysException.builder()
+                .message("Your balance is not enough.")
+                .errorCode(400).build();
     }
 }

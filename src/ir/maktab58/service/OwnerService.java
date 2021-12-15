@@ -3,6 +3,7 @@ package ir.maktab58.service;
 import ir.maktab58.dao.OwnerDao;
 import ir.maktab58.exceptions.BankSysException;
 import ir.maktab58.models.Owner;
+import ir.maktab58.models.factory.Account;
 import ir.maktab58.service.singletonvalidator.UserAndPassValidator;
 
 /**
@@ -45,5 +46,9 @@ public class OwnerService {
         owner.setPassword(password);
         ownerDao.update(owner);
         return owner;
+    }
+
+    public Owner getOwnerByAccountId(Account account) {
+        return ownerDao.findOwnerByAccount(account);
     }
 }

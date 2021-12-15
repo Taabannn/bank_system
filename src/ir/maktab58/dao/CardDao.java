@@ -2,7 +2,6 @@ package ir.maktab58.dao;
 
 import ir.maktab58.dao.singletonsessionfactory.SessionUtil;
 import ir.maktab58.models.Card;
-import ir.maktab58.models.Owner;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;

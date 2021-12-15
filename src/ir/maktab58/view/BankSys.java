@@ -1,6 +1,7 @@
 package ir.maktab58.view;
 
 import ir.maktab58.exceptions.BankSysException;
+import ir.maktab58.models.Owner;
 import ir.maktab58.models.factory.Account;
 import ir.maktab58.service.BankService;
 
@@ -138,12 +139,30 @@ public class BankSys {
         String dischargeStr = tokens[0];
         long destCardNumber = Long.parseLong(tokens[1]);
         long discharge = Long.parseLong(dischargeStr);
-        bankService.getCardNumberOwnerInfo(destCardNumber);
-        int result = bankService.cardToCardTransaction(accountId, discharge,destCardNumber);
-        if (result == 0)
-            System.out.println("please try again!");
-        else
-            System.out.println("cardToCard transaction has happened successfully!");
+        Owner cardNumberOwnerInfo = bankService.getCardNumberOwnerInfo(destCardNumber);
+        System.out.println("des card Info: \n" +
+                "owner: " + cardNumberOwnerInfo.getName() + " " + cardNumberOwnerInfo.getFamily() + "\n" +
+                "card number: " + destCardNumber);
+        completeCardToCardProcess(accountId, destCardNumber, discharge);
+    }
+
+    private void completeCardToCardProcess(int accountId, long destCardNumber, long discharge) {
+        System.out.println("Do you want to continue?");
+        String answer = scanner.nextLine().trim().toLowerCase();
+        if (answer.equals("yes")) {
+            int result = bankService.cardToCardTransaction(accountId, discharge, destCardNumber);
+            if (result == 0)
+                System.out.println("please try again!");
+            else
+                System.out.println("cardToCard transaction has happened successfully!");
+            return;
+        }
+        if (answer.equals("no")) {
+            return;
+        }
+        throw BankSysException.builder()
+                .message("your answer must be yes or no.")
+                .errorCode(400).build();
     }
 
     private void updateUserInfo(int ownerId) {

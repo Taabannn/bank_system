@@ -26,7 +26,6 @@ public class CardService {
                 .withCardNumber(cardNumber)
                 .withCvv2(cvv2)
                 .withExpirationDate(expiration).build();
-        //cardDao.save(card);
         account.setCard(card);
     }
 
