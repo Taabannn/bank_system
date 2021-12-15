@@ -15,7 +15,7 @@ public class BankTransactionDao extends BaseDaoInterfaceImpl<BankTransaction> {
     public List<BankTransaction> findTransactionsByAccountID(int accountId) {
         Session session = SessionUtil.getSession();
         Transaction transaction = session.beginTransaction();
-        Query<BankTransaction> query = session.createQuery("FROM BankTransaction transaction join Account account on transaction.account.id = account.id WHERE transaction.account.id=:accountId", BankTransaction.class);
+        Query<BankTransaction> query = session.createQuery("FROM BankTransaction transaction WHERE transaction.account.id=:accountId", BankTransaction.class);
         query.setParameter("accountId", accountId);
         List<BankTransaction> transactions = query.getResultList();
         transaction.commit();
