@@ -4,6 +4,7 @@ import ir.maktab58.enumeration.TransactionType;
 import ir.maktab58.enumeration.UpdateType;
 import ir.maktab58.exceptions.BankSysException;
 import ir.maktab58.models.BankTransaction;
+import ir.maktab58.models.Card;
 import ir.maktab58.models.Owner;
 import ir.maktab58.models.UpdateInfo;
 import ir.maktab58.models.factory.Account;
@@ -131,8 +132,11 @@ public class BankService {
                     .withAccount(account)
                     .withDetails("-" + discharge).build();
             return bankTransactionService.saveNewTransaction(bankTransaction);
+        } else {
+            throw BankSysException.builder()
+                    .message("Your balance is not enough.")
+                    .errorCode(400).build();
         }
-        return 0;
     }
 
     public int depositTransaction(int accountId, long charge) {
@@ -148,5 +152,10 @@ public class BankService {
                 .withAccount(account)
                 .withDetails("+" + charge).build();
         return bankTransactionService.saveNewTransaction(bankTransaction);
+    }
+
+    public Owner getCardNumberOwnerInfo(long destCardNumber) {
+        Card card = cardService.getCard(destCardNumber);
+        Account account = accountService.getCardAccount(card.getId());
     }
 }

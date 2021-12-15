@@ -39,4 +39,8 @@ public class AccountService {
     public void updateAccount(Account account) {
         accountDao.update(account);
     }
+
+    public Account getCardAccount(int cardId) {
+        return accountDao.findAccountByCardId(cardId);
+    }
 }

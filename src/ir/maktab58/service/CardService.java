@@ -29,4 +29,8 @@ public class CardService {
         //cardDao.save(card);
         account.setCard(card);
     }
+
+    public Card getCard(long destCardNumber) {
+        return cardDao.findCardByCardNumber(destCardNumber);
+    }
 }

@@ -119,7 +119,7 @@ public class BankSys {
                     case "1" -> updateUserInfo(ownerId);
                     case "2" -> withdraw(accountId);
                     case "3" -> deposit(accountId);
-                    case "4" -> cardToCard(ownerId, accountId);
+                    case "4" -> cardToCard(accountId);
                     case "5" -> back = true;
                     default -> throw BankSysException.builder()
                             .message("Choice must be an integer between 1 to 5.")
@@ -131,7 +131,19 @@ public class BankSys {
         }
     }
 
-    private void cardToCard(int ownerId, int accountId) {
+    private void cardToCard(int accountId) {
+        System.out.println("please enter the amount of transaction, cardNumber of receiver account: ");
+        String inputLine = scanner.nextLine().trim();
+        String[] tokens = inputLine.split(" ");
+        String dischargeStr = tokens[0];
+        long destCardNumber = Long.parseLong(tokens[1]);
+        long discharge = Long.parseLong(dischargeStr);
+        bankService.getCardNumberOwnerInfo(destCardNumber);
+        int result = bankService.cardToCardTransaction(accountId, discharge,destCardNumber);
+        if (result == 0)
+            System.out.println("please try again!");
+        else
+            System.out.println("cardToCard transaction has happened successfully!");
     }
 
     private void updateUserInfo(int ownerId) {
