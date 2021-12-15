@@ -35,4 +35,12 @@ public class BankTransaction {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_account_id", updatable = false)
     private Account account;
+
+    @Builder(setterPrefix = "with")
+    public BankTransaction(TransactionType transactionType, Date dateOfTransaction, String details, Account account) {
+        this.transactionType = transactionType;
+        this.dateOfTransaction = dateOfTransaction;
+        this.details = details;
+        this.account = account;
+    }
 }

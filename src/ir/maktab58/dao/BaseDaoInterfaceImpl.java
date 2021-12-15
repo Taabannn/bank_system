@@ -1,6 +1,6 @@
 package ir.maktab58.dao;
 
-import ir.maktab58.dao.singleton.SessionUtil;
+import ir.maktab58.dao.singletonsessionfactory.SessionUtil;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.hibernate.query.Query;
@@ -11,7 +11,7 @@ import java.util.Map;
 /**
  * @author Taban Soleymani
  */
-public class DaoInterfaceImpl<T> implements DaoInterface<T> {
+public class BaseDaoInterfaceImpl<T> implements BaseDaoInterface<T> {
     @Override
     public T get(Class<T> cl, Integer id) {
         Session session = SessionUtil.getSession();

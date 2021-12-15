@@ -8,11 +8,8 @@ import lombok.Getter;
  */
 @AllArgsConstructor
 public enum UpdateType {
-    UPDATE_NAME("update name"),
-    UPDATE_FAMILY("update family"),
     UPDATE_USERNAME("update username"),
-    UPDATE_PASSWORD("update password"),
-    UPDATE_EMAIL("update email");
+    UPDATE_PASSWORD("update password");
 
     private @Getter String type;
 }

@@ -1,4 +1,4 @@
-package ir.maktab58.dao.singleton;
+package ir.maktab58.dao.singletonsessionfactory;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -17,7 +17,7 @@ public class SessionUtil {
 
     private SessionUtil() {
         Configuration configuration = new Configuration();
-        configuration.configure("ir/maktab58/resource/hibernate.cfg.xml");
+        configuration.configure("ir/maktab58/config/hibernate.cfg.xml");
         sessionFactory = configuration.buildSessionFactory();
     }
 

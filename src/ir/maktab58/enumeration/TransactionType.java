@@ -10,7 +10,8 @@ import lombok.Getter;
 public enum TransactionType {
     DEPOSIT("deposit"),
     WITHDRAW("withdraw"),
-    DEPOSIT_INTEREST("deposit_interest");
+    DEPOSIT_INTEREST("deposit_interest"),
+    CARD_TO_CARD("card_to_card");
 
     private @Getter String type;
 }

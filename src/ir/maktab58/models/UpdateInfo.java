@@ -1,6 +1,9 @@
 package ir.maktab58.models;
 
 import ir.maktab58.enumeration.UpdateType;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -10,6 +13,8 @@ import java.util.Date;
  * @author Taban Soleymani
  */
 @Entity
+@Data
+@NoArgsConstructor
 public class UpdateInfo {
     @Id
     @GeneratedValue(strategy =  GenerationType.IDENTITY)
@@ -24,4 +29,12 @@ public class UpdateInfo {
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "fk_owner_id")
     private Owner owner;
+
+    @Builder(setterPrefix = "with")
+    public UpdateInfo(Date dateOfUpdate, UpdateType updateType, String detail, Owner owner) {
+        this.dateOfUpdate = dateOfUpdate;
+        this.updateType = updateType;
+        this.detail = detail;
+        this.owner = owner;
+    }
 }
