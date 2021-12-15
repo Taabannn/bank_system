@@ -114,7 +114,7 @@ public class BankSys {
                     "3) deposit\n" +
                     "4) card to card\n" +
                     "5) check the balance\n" +
-                    "5) back");
+                    "6) back");
             String choice = scanner.nextLine().trim();
             try {
                 switch (choice) {

@@ -19,7 +19,6 @@ public class AccountDao extends BaseDaoInterfaceImpl<Account> {
         Query<Account> query = session.createQuery("FROM Account account WHERE account.owner.id=:ownerId", Account.class);
         query.setParameter("ownerId", ownerId);
         List<Account> accounts = query.getResultList();
-        accounts.forEach(Account::getCard);
         transaction.commit();
         session.close();
         return accounts;
