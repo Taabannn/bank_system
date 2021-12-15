@@ -124,7 +124,7 @@ public class BankService {
         if (account.getBalance() > discharge) {
             account.setBalance(account.getBalance() - discharge);
             if (accountTransaction.size() == 3)
-                bankTransactionService.deleteTheOldTransaction(accountTransaction.remove(0));
+                bankTransactionService.deleteTheOldTransaction(accountTransaction.remove(0), accountId);
             accountService.updateAccount(account);
             BankTransaction bankTransaction = BankTransaction.builder()
                     .withDateOfTransaction(new Date())
@@ -144,7 +144,7 @@ public class BankService {
         Account account = accountService.getAccountByAccountId(accountId);
         account.setBalance(account.getBalance() + charge);
         if (accountTransaction.size() == 3)
-            bankTransactionService.deleteTheOldTransaction(accountTransaction.remove(0));
+            bankTransactionService.deleteTheOldTransaction(accountTransaction.remove(0), accountId);
         accountService.updateAccount(account);
         BankTransaction bankTransaction = BankTransaction.builder()
                 .withDateOfTransaction(new Date())
@@ -174,7 +174,7 @@ public class BankService {
         destAccount.setBalance(destAccount.getBalance() + discharge);
         List<BankTransaction> destAccountTransaction = bankTransactionService.getAccountTransaction(destAccount.getId());
         if (destAccountTransaction.size() == 3)
-            bankTransactionService.deleteTheOldTransaction(destAccountTransaction.remove(0));
+            bankTransactionService.deleteTheOldTransaction(destAccountTransaction.remove(0), destAccount.getId());
         accountService.updateAccount(destAccount);
         BankTransaction bankTransaction1 = BankTransaction.builder()
                 .withTransactionType(TransactionType.CARD_TO_CARD)
@@ -190,7 +190,7 @@ public class BankService {
             sourceAccount.setBalance(sourceAccount.getBalance() - discharge);
             List<BankTransaction> sourceAccountTransaction = bankTransactionService.getAccountTransaction(accountId);
             if (sourceAccountTransaction.size() == 3)
-                bankTransactionService.deleteTheOldTransaction(sourceAccountTransaction.remove(0));
+                bankTransactionService.deleteTheOldTransaction(sourceAccountTransaction.remove(0), accountId);
             accountService.updateAccount(sourceAccount);
             BankTransaction bankTransaction = BankTransaction.builder()
                     .withDateOfTransaction(new Date())

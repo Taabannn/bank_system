@@ -15,8 +15,8 @@ public class BankTransactionService {
         return bankTransactionDao.findTransactionsByAccountID(accountId);
     }
 
-    public void deleteTheOldTransaction(BankTransaction oldTransaction) {
-        bankTransactionDao.delete(oldTransaction);
+    public void deleteTheOldTransaction(BankTransaction oldTransaction, int accountId) {
+        bankTransactionDao.removeOldTransaction(oldTransaction, accountId);
     }
 
     public int saveNewTransaction(BankTransaction bankTransaction) {

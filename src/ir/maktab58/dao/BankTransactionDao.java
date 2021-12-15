@@ -22,4 +22,15 @@ public class BankTransactionDao extends BaseDaoInterfaceImpl<BankTransaction> {
         session.close();
         return transactions;
     }
+
+    public void removeOldTransaction(BankTransaction oldTransaction, int accountId) {
+        Session session = SessionUtil.getSession();
+        Transaction transaction = session.beginTransaction();
+        Query query = session.createQuery("delete from BankTransaction transaction WHERE transaction.id=:transactionId AND transaction.account.id=:accountId");
+        query.setParameter("transactionId", oldTransaction.getId());
+        query.setParameter("accountId", accountId);
+        query.executeUpdate();
+        transaction.commit();
+        session.close();
+    }
 }
