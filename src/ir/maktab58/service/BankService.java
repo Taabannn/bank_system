@@ -108,7 +108,7 @@ public class BankService {
         Owner owner = ownerService.updateOwnerPassword(password, ownerId);
         UpdateInfo updateInfo = UpdateInfo.builder()
                 .withDateOfUpdate(new Date())
-                .withUpdateType(UpdateType.UPDATE_USERNAME)
+                .withUpdateType(UpdateType.UPDATE_PASSWORD)
                 .withDetail("password has changed to: " + password)
                 .withOwner(owner).build();
         updateInfoService.saveUpdateInfo(updateInfo);
