@@ -12,8 +12,8 @@ import java.util.Scanner;
  * @author Taban Soleymani
  */
 public class BankSys {
-    private BankService bankService = new BankService();
-    private Scanner scanner = new Scanner(System.in);
+    private final BankService bankService = new BankService();
+    private final Scanner scanner = new Scanner(System.in);
 
     public void showMenu() {
         boolean exit = false;
