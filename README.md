@@ -1,5 +1,5 @@
 # bank_system
-This project is a simple simulation of a bank system
+This project is a simple simulation of a bank system by using hibernate framework.
 
 ### Requirements 🔧
 * Java version 8 or higher.
